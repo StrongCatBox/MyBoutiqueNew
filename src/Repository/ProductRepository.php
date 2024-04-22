@@ -96,9 +96,16 @@ class ProductRepository extends ServiceEntityRepository
 
         if (!empty($search->getString())) {
 
-            $queryBuilder
-                ->andWhere('p.name LIKE :name OR p.description LIKE :name')
-                ->setParameter('name', '%' . $search->getString() . '%');
+
+
+            $mots = explode(' ', $search->getString());
+            // dd($mots);
+
+            foreach ($mots as $cle => $mot) {
+                $queryBuilder
+                    ->andWhere('p.name LIKE :name' . $cle . ' OR p.description LIKE :name' . $cle)
+                    ->setParameter('name' . $cle, '%' . $mot . '%');
+            }
         }
 
         $query = $queryBuilder->getQuery();
