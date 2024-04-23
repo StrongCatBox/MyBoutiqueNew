@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Formulaire de commentaire de produit
+{% endblock %}
+
+{% block content %}
+	<h1 class="mt-3">
+		poster le commentaire de
+		{{product.name}}</h1>
+
+
+	<div class="alert alert-light">
+
+		<h2 class="mt-3">
+			Donnez votre avis ici :
+		</h2>
+		{{ form_start(form) }}
+		{{ form_end(form) }}
+	</div>
+	<a href="{{path('account')}}">Retour à votre compte</a>
+
+{% endblock %}
