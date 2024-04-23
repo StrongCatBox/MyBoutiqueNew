@@ -4,21 +4,46 @@
 {% endblock %}
 
 {% block content %}
+	<div class="container">
+		<h1 class="mt-4">Mon compte</h1>
+		<p>Bienvenue,</p>
+		<p>{{ app.user.firstName }}
+			{{ app.user.lastName }}, dans votre compte. Vous pouvez gérer vos informations personnelles.</p>
 
-	<h1 class="mt-4">Mon compte</h1>
-	Bienvenu
-	{{app.user.lastName}}
-	{{app.user.firstName}}
-	dans votre compte - vous pouvez gérer vos informations personnelles.<br>
-
-
-	<br>
-	-
-	<a href="{{path('account_password')}}">Modification de mot de passe</a><br>
-	-
-	<a href="{{path('account_address')}}">Gérer mes adresses</a><br>
-	-
-	<a href="{{path('account_order')}}">Mes commandes</a><br>
-
-
+		<div class="row justify-content-center mt-4">
+			<div class="col-md-4">
+				<div class="card bg-danger text-white d-flex h-100 align-items-center">
+					<div class="card-body">
+						<h5 class="card-title">
+							<i class="fas fa-key"></i>
+							Modification de mot de passe</h5>
+						<p class="card-text">Cliquez ci-dessous pour modifier votre mot de passe :</p>
+						<a href="{{ path('account_password') }}" class="btn btn-light align-self-start">Modifier le mot de passe</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card bg-danger text-white d-flex h-100 align-items-center">
+					<div class="card-body">
+						<h5 class="card-title">
+							<i class="fas fa-address-book"></i>
+							Gérer mes adresses</h5>
+						<p class="card-text">Cliquez ci-dessous pour gérer vos adresses :</p>
+						<a href="{{ path('account_address') }}" class="btn btn-light align-self-start">Gérer les adresses</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card bg-danger text-white d-flex h-100 align-items-center">
+					<div class="card-body">
+						<h5 class="card-title">
+							<i class="fas fa-shopping-cart"></i>
+							Mes commandes</h5>
+						<p class="card-text">Cliquez ci-dessous pour voir vos commandes :</p>
+						<a href="{{ path('account_order') }}" class="btn btn-light align-self-start">Voir mes commandes</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -216,4 +216,28 @@ class Product
             return 0;
         }
     }
+
+    public function getCommentFromUser(User $user)
+    {
+        foreach ($this->comments as $comment) {
+
+
+            if ($comment->getUser() === $user) return $comment;
+        }
+
+        return null;
+    }
+
+    public function isProductFromUser(User $user)
+    {
+
+        foreach ($user->getOrders() as $orders) {
+            foreach ($orders->getOrderDetails() as $order) {
+
+
+                if ($order->getProduct()->getId() == $this->id && $orders->getStatut()) return $order->getProduct();
+            }
+        }
+        return null;
+    }
 }

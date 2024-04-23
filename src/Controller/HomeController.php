@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Mime\Email;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,8 +14,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(RequestStack $requestStack, OrderRepository $repo): Response
+    public function index(RequestStack $requestStack, OrderRepository $repo, MailerInterface $mailer): Response
     {
+
+
+        $email = (new Email())
+            ->from('saljei055@gmail.com')
+            ->to('saljei055@gmail.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            //  ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $mailer->send($email);
 
 
         //    dd($repo->FindOrder('admin@admin.fr'));

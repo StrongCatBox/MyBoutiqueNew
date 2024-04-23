@@ -6,6 +6,7 @@ use App\Entity\Carrier;
 use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ class DashboardController extends AbstractDashboardController
 {
 
     private $order;
-   
+
     public function __construct(OrderRepository $repo)
     {
         $this->order = $repo;
@@ -28,7 +29,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-       // return parent::index();
+        // return parent::index();
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -44,7 +45,7 @@ class DashboardController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-         return $this->render('admin/dashBoard.html.twig');
+        return $this->render('admin/dashBoard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -57,17 +58,18 @@ class DashboardController extends AbstractDashboardController
     {
 
 
-$orderValid = count($this->order->findByStatut(1));
-$orderNoValid = count($this->order->findByStatut(0));
+        $orderValid = count($this->order->findByStatut(1));
+        $orderNoValid = count($this->order->findByStatut(0));
 
         yield MenuItem::linkToDashboard('Dashboard', 'fas fa-home');
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Administrateurs', 'fas fa-users', User::class)->setController(AdminUserCrudController::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
         yield MenuItem::section('Commandes');
-        yield MenuItem::linkToCrud('Commandes <span class="badge badge-success">'.$orderValid.'</span> <span class="badge badge-danger">'.$orderNoValid.'</span>', 'fas fa-shopping-cart', Order::class);
+        yield MenuItem::linkToCrud('Commandes <span class="badge badge-success">' . $orderValid . '</span> <span class="badge badge-danger">' . $orderNoValid . '</span>', 'fas fa-shopping-cart', Order::class);
         yield MenuItem::linkToCrud('Catégories', 'fas fa-folder', Category::class);
         yield MenuItem::linkToCrud('Produits', 'fas fa-tags', Product::class);
         yield MenuItem::linkToCrud('Transporteurs', 'fas fa-truck', Carrier::class);
+        yield MenuItem::linkToCrud('Commentaires', 'fas fa-comment', Comment::class);
     }
 }

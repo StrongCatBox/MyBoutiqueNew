@@ -156,9 +156,10 @@ class Order
         return $this;
     }
 
-public function getTotal(){
+public function getTotal() : float
+{
 
-   $total=null;
+   $total=0;
 
   // dd($this->getOrderDetails()->getValues());
 
