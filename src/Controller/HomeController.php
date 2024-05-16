@@ -14,10 +14,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(RequestStack $requestStack, OrderRepository $repo, MailerInterface $mailer): Response
+    public function index(RequestStack $requestStack, OrderRepository $repo,): Response
     {
 
-
+        /*
         $email = (new Email())
             ->from('saljei055@gmail.com')
             ->to('saljei055@gmail.com')
@@ -30,7 +30,7 @@ class HomeController extends AbstractController
             ->html('<p>See Twig integration for better HTML integration!</p>');
 
         $mailer->send($email);
-
+*/
 
         //    dd($repo->FindOrder('admin@admin.fr'));
 

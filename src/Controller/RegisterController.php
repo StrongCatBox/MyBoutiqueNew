@@ -19,7 +19,7 @@ class RegisterController extends AbstractController
     private $passwordHasher;
     private $manager;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher,EntityManagerInterface $manager)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $manager)
     {
         $this->passwordHasher = $passwordHasher;
         $this->manager = $manager;
@@ -31,36 +31,44 @@ class RegisterController extends AbstractController
     {
         $user = new User();
 
-        $form = $this->createForm(RegisterType::class,$user);
+        $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
-        // hash the password (based on the security.yaml config for the $user class)
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $user,
-            $user->getPassword()
-        );
-        $user->setPassword($hashedPassword);
+            // hash the password (based on the security.yaml config for the $user class)
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                $user->getPassword()
+            );
+            $user->setPassword($hashedPassword);
 
-        // persiste les données dans le temps
-        $this->manager->persist($user);
+            // persiste les données dans le temps
+            $this->manager->persist($user);
 
-        //ecrit dans la bdd
-        $this->manager->flush();
+            //ecrit dans la bdd
+            $this->manager->flush();
 
-        $this->addFlash(
-            'success',
-            'Le compte '.$user->getEmail().' a bien été créé'
-        );
-  
-    
+            // Envoie d'un mail
+            $contentEmail = 'Bonjour' . $user->getEmail() . '<br>
+             Merci de votre inscription, le compte a été crée et doit etre activé via le lien ci dessous<br>
+        http://lien';
 
-return $this->redirectToRoute('app_login');
+            mail($user->getEmail(), 'Activation de compte', $contentEmail);
 
-    }
-        
+
+
+            $this->addFlash(
+                'success',
+                'Le compte ' . $user->getEmail() . ' a bien été créé et doit etre activé, un mail vous a été envoyé'
+            );
+
+
+
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('register/register.html.twig', [
             'form' => $form->createView()
         ]);
