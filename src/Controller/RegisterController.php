@@ -37,10 +37,33 @@ class RegisterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+
+            $token = sha1($user->getEmail() . $user->getPassword());
+
+            $content_mail = 'Bonjour' . $user->getFirstName() . '' . $user->getLastName() . ',<br><br>
+            Merci de vous etre inscrit sur My Boutique. Votre compte a été céé et doit etre activé avant que vous puissiez l\'utiliser.<br>
+            Pour l\'activer,cliquez sur le lien ci dessous ou copiez et collez le dans votre navigateur:<br><a href="https://' . $_SERVER['HTTP_HOST'] . '/inscription/' . $user->getEmail() . '/' . $token . '"style="color: #5cff00">https://'
+                . $_SERVER['HTTP_HOST'] . '/inscription/' . $user->getEmail() . '/' . $token . '</a><br><br>
+            Apres activation vous pourrez vous connecter a < href="https://www.myboutique.com/" style="color:
+            #5cff00">https://www.myboutique.com/</a> en utilisant l\'identifiant et le mot de passe suivants: <br>
+            Identifiant:' . $user->getEmail() . '<br>';
+
+
+
+            //envoi d'un mail a l'utilisateur
+
+            // $mail->send($user->getEmail().$user->getFirstName().''.$user->getLastName().'Details du compte utilisateur de'.$user->getFirstName().''.$user->getLastName().'sur My boutique'.$content_mail);
+
+            //
+
+
+
+
             // hash the password (based on the security.yaml config for the $user class)
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
                 $user->getPassword()
+
             );
             $user->setPassword($hashedPassword);
 
@@ -72,5 +95,41 @@ class RegisterController extends AbstractController
         return $this->render('register/register.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    public function Register_active(Request $request, EntityManagerInterface $manager, Mail $mail, User $user, $token): Response
+    {
+
+        $token_verif = sha1($user->getEmail() . $user->getPassword());
+
+
+        if (!$user->getActive()) {
+
+            if ($token == $token_verif) {
+
+                $user->setActive(true);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Compte activé avec success"
+                );
+
+                return $this->redirectToRoute('app_login');
+            } else {
+                $this->addFlash(
+                    'danger',
+                    "Lien d'activation incorrect"
+                );
+                return $this->redirectToRoute('home');
+            }
+        } else {
+
+            $this->addFlash(
+                'success',
+                "Compte deja activé"
+            );
+            return $this->redirectToRoute('app_login');
+        }
     }
 }
