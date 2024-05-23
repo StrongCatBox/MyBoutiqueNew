@@ -2,18 +2,20 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Carrier;
 use App\Entity\User;
+use App\Entity\Order;
+use App\Entity\Carrier;
+use App\Entity\Comment;
 use App\Entity\Product;
 use App\Entity\Category;
-use App\Entity\Comment;
-use App\Entity\Order;
+use App\Entity\Settings;
 use App\Repository\OrderRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+
 
 class DashboardController extends AbstractDashboardController
 {
@@ -62,6 +64,8 @@ class DashboardController extends AbstractDashboardController
         $orderNoValid = count($this->order->findByStatut(0));
 
         yield MenuItem::linkToDashboard('Dashboard', 'fas fa-home');
+        yield MenuItem::section('Configuration');
+        yield MenuItem::linkToCrud('Configuration', 'fa fa-cogs', Settings::class);
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Administrateurs', 'fas fa-users', User::class)->setController(AdminUserCrudController::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);

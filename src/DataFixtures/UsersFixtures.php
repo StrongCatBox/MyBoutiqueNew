@@ -13,12 +13,11 @@ class UsersFixtures extends Fixture
 {
 
     private $passwordHasher;
-  
+
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
-      
     }
 
     public function load(ObjectManager $manager): void
@@ -28,28 +27,29 @@ class UsersFixtures extends Fixture
         $admin->setFirstName('Eric')
             ->setLastName('Devolder')
             ->setEmail('admin@admin.fr')
+            ->setActive(1)
             ->setPassword($this->passwordHasher->hashPassword(
                 $admin,
-               'a'
+                'a'
             ))
             ->setRoles(['ROLE_ADMIN']);
-        $manager->persist($admin);    
+        $manager->persist($admin);
 
-        $faker = Factory::create('fr_FR');   
+        $faker = Factory::create('fr_FR');
 
-        for ($i=1; $i <=10 ; $i++) { 
-            
+        for ($i = 1; $i <= 10; $i++) {
+
             $user = new User();
             $user->setFirstName($faker->firstName())
-            ->setLastName($faker->lastName())
-            ->setEmail($faker->email())
-            ->setPassword($this->passwordHasher->hashPassword(
-                $user,
-               'a'
-            ));
+                ->setLastName($faker->lastName())
+                ->setActive(0)
+                ->setEmail($faker->email())
+                ->setPassword($this->passwordHasher->hashPassword(
+                    $user,
+                    'a'
+                ));
 
-         $manager->persist($user);   
-
+            $manager->persist($user);
         }
 
         $manager->flush();
